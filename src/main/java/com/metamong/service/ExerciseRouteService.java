@@ -3,9 +3,12 @@ package com.metamong.service;
 import com.metamong.dao.ExerciseDao;
 import com.metamong.entity.Exercise;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,23 +24,29 @@ public class ExerciseRouteService {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Integer> createExercise(@RequestBody Exercise exercise) throws Exception {
+    public ResponseEntity<Message> createExercise(@RequestBody Exercise exercise) throws Exception {
         int saved_id = exerciseDao.create(exercise);
 
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
         if (saved_id == -1) {
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage("404");
+
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(saved_id);
-    }
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("200");
+        message.setData(saved_id);
 
-    @GetMapping("/hi")
-    public String hi() {
-        return "hi";
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Exercise> getExerciseById(@RequestBody Map<String, Integer> param) throws Exception {
+    public ResponseEntity<Message> getExerciseById(@RequestBody Map<String, Integer> param) throws Exception {
         int id = param.get("id");
 
         Exercise ex = exerciseDao.getById(id);
@@ -46,11 +55,19 @@ public class ExerciseRouteService {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(ex);
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("200");
+        message.setData(ex);
+
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/getall")
-    public ResponseEntity<ArrayList<Exercise>> getAllExercise() throws Exception {
+    public ResponseEntity<Message> getAllExercise() throws Exception {
 
         ArrayList<Exercise> exList = exerciseDao.getAll();
 
@@ -58,6 +75,35 @@ public class ExerciseRouteService {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(exList);
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("200");
+        message.setData(exList);
+
+        return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/search/{title}")
+    public ResponseEntity<Message> searchTitleByWord(
+            @PathVariable("title") String keyword
+    ) throws Exception {
+        ArrayList<Exercise> exList = exerciseDao.searchByString(keyword);
+
+        if(exList.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("200");
+        message.setData(exList);
+
+        return ResponseEntity.ok(message);
     }
 }
