@@ -11,6 +11,8 @@ public interface ExerciseDao {
 
     ArrayList<Exercise> getAll() throws Exception;
 
+    ArrayList<Exercise> searchByString(String searchWord) throws Exception;
+
     void update(Exercise exercise);
 
     void deleteById(int id);

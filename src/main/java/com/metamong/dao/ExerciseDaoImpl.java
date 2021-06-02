@@ -79,6 +79,20 @@ public class ExerciseDaoImpl implements ExerciseDao {
         Connection c = connection.getConnection();
 
         String sql = "SELECT * FROM EXERCISE";
+        return getExercisesInStmt(exList, c, sql);
+    }
+
+    @Override
+    public ArrayList<Exercise> searchByString(String searchWord) throws Exception {
+        ArrayList<Exercise> exList = new ArrayList<>();
+
+        Connection c = connection.getConnection();
+
+        String sql = "SELECT * FROM EXERCISE WHERE TITLE LIKE '%" + searchWord + "%'";
+        return getExercisesInStmt(exList, c, sql);
+    }
+
+    private ArrayList<Exercise> getExercisesInStmt(ArrayList<Exercise> exList, Connection c, String sql) throws SQLException {
         PreparedStatement ps = c.prepareStatement(sql);
 
         ResultSet rs = ps.executeQuery();
