@@ -15,7 +15,7 @@ public class PostgresConnection implements DbConnection {
         Class.forName("org.postgresql.Driver");
 
         // 연결 정보 입력
-        String dburl = "jdbc:postgresql://127.0.0.1:5433/metamong_db";
+        String dburl = "jdbc:postgresql://3.35.106.239:5433/metamong_db";
         String username = "user";
         String password="1234";
 
