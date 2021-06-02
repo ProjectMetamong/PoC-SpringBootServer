@@ -1,39 +1,35 @@
 package com.metamong.entity;
 
 
-public class Exercise {
-    int id;
-    int thumbnail;
+import java.io.Serializable;
+
+public class Exercise implements Serializable {
+    int exerciseId;
     String title;
     String difficulty;
     String creator;
     int videoLength;
-    String describe;
+    String description;
 
-    public Exercise(int id, int thumbnail, String title, String difficulty, String creator, int videoLength, String describe) {
-        this.id = id;
-        this.thumbnail = thumbnail;
+    public Exercise(int id, String title, String difficulty, String creator, int videoLength, String describe) {
+        this.exerciseId = id;
         this.title = title;
         this.difficulty = difficulty;
         this.creator = creator;
         this.videoLength = videoLength;
-        this.describe = describe;
+        this.description = describe;
     }
 
-    public int getId() {
-        return id;
+    public Exercise() {
+
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getExerciseId() {
+        return exerciseId;
     }
 
-    public int getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setExerciseId(int exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public String getTitle() {
@@ -68,11 +64,11 @@ public class Exercise {
         this.videoLength = videoLength;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
