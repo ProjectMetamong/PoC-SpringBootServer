@@ -92,10 +92,6 @@ public class ExerciseRouteService {
     ) throws Exception {
         ArrayList<Exercise> exList = exerciseDao.searchByString(keyword);
 
-        if(exList.size() == 0) {
-            return ResponseEntity.notFound().build();
-        }
-
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
