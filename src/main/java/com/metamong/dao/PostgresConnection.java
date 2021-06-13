@@ -17,7 +17,7 @@ public class PostgresConnection implements DbConnection {
         // 연결 정보 입력
         String dburl = "jdbc:postgresql://3.35.106.239:5433/metamong_db";
         String username = "user";
-        String password="1234";
+        String password = "1234";
 
         // 커넥션 생성 및 반환
         Connection conn = DriverManager.getConnection(dburl, username, password);

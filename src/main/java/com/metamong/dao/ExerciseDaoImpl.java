@@ -93,24 +93,28 @@ public class ExerciseDaoImpl implements ExerciseDao {
     }
 
     private ArrayList<Exercise> getExercisesInStmt(ArrayList<Exercise> exList, Connection c, String sql) throws SQLException {
-        PreparedStatement ps = c.prepareStatement(sql);
+        try {
+            PreparedStatement ps = c.prepareStatement(sql);
 
-        ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-        Exercise exercise = null;
-        while (rs.next()) {
-            exercise = getExercise(rs);
-            exList.add(exercise);
+            Exercise exercise = null;
+            while (rs.next()) {
+                exercise = getExercise(rs);
+                exList.add(exercise);
+            }
+
+            if (exercise == null)
+                throw new EmptyResultDataAccessException(1);
+
+            rs.close();
+            ps.close();
+            c.close();
+
+            return exList;
+        } catch (EmptyResultDataAccessException e) {
+            return exList;
         }
-
-        if (exercise == null)
-            throw new EmptyResultDataAccessException(1);
-
-        rs.close();
-        ps.close();
-        c.close();
-
-        return exList;
     }
 
     private Exercise getExercise(ResultSet rs) throws SQLException {
